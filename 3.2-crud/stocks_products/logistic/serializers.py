@@ -40,8 +40,9 @@ class StockSerializer(serializers.ModelSerializer):
         stock = super().update(instance, validated_data)
 
         for position in positions:
+            defaults = {'quantity': position['quantity'], 'price': position['price']}
             StockProduct.objects.update_or_create(
-                stock=stock, **position
+                stock=stock, product=position['product'], defaults=defaults
             )
 
         return stock
